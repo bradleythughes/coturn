@@ -68,13 +68,7 @@ extern "C" {
 static inline uint64_t _ioa_ntoh64(uint64_t v)
 {
 #if BYTE_ORDER == LITTLE_ENDIAN
-	uint8_t *src = (uint8_t*) &v;
-	uint8_t* dst = src + 7;
-	while (src < dst) {
-		uint8_t vdst = *dst;
-		*(dst--) = *src;
-		*(src++) = vdst;
-	}
+	v = ((uint64_t)ntohl(v & 0xffffffff)) << 32 | ntohl(v >> 32);
 #elif BYTE_ORDER == BIG_ENDIAN
 	/* OK */
 #else
